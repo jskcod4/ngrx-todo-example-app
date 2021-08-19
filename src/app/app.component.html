@@ -1,0 +1,27 @@
+<div class="container">
+  <div *ngIf="!(todo$ | async)?.length" class="item item--empty">
+    No existen tareas agregadas. Por qué no intentas añadir una nueva tarea ?
+  </div>
+
+  <div *ngIf="(todo$ | async)?.length" class="header">
+    Ngrx test simple todo app
+  </div>
+
+  <div *ngFor="let item of todo$ | async" class="item">
+    {{ item.text }}
+
+    <div class="options">
+      <a href="#!" (click)="delete(item)"> Eliminar </a>
+    </div>
+  </div>
+
+  <form class="container-write" (ngSubmit)="submit($event.target)">
+    <input
+      #inputElement
+      type="text"
+      name="text"
+      placeholder="Escriba su nueva tarea"
+    />
+    <button type="submit">Agregar</button>
+  </form>
+</div>
