@@ -25,11 +25,9 @@ export class AppComponent implements OnInit {
     if (text?.trim() !== '') {
       this.store.dispatch(
         add({
-          todo: {
-            id: new Date().getTime(),
-            text: text || '',
-            dateTime: new Date(),
-          },
+          id: new Date().getTime(),
+          text: text || '',
+          dateTime: new Date(),
         })
       );
 
@@ -40,7 +38,7 @@ export class AppComponent implements OnInit {
   delete(item: TodoState) {
     this.store.dispatch(
       remove({
-        todo: item,
+        ...item,
       })
     );
   }
