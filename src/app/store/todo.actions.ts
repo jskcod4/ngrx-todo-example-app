@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 
 export enum ActionTypes {
   Add = '[Todo component] Add',
+  AddedSuccess = '[Todo Api Service] Added with success',
   Remove = '[Todo component Remove]',
 }
 
