@@ -4,7 +4,7 @@ Este es una simple TODO APP para explicar minimamente como funciona Ngrx ğŸ¤˜ğŸ
 
 ##
 
-## Inicialiar app
+## Inicializar app
 
 ```bash
 npm run start
