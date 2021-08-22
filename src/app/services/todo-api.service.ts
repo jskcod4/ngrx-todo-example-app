@@ -24,4 +24,17 @@ export class TodoApiService {
       })
     );
   }
+
+  remove(todo: TodoState): Observable<TodoState> {
+    const fakeObservable = new Observable<TodoState>((obs) => {
+      obs.next(todo);
+      obs.complete();
+    });
+
+    return fakeObservable.pipe(delay(1000)).pipe(
+      tap(() => {
+        console.log(`Todo request removed`, todo);
+      })
+    );
+  }
 }

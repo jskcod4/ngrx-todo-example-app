@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
 
-import { add, remove, TodoState } from './store/todo.actions';
-import { TodoEffects } from './store/todo.effects';
+import { ActionTypes, add, remove, TodoState } from './store/todo.actions';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +18,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<{ todo: TodoState[] }>,
-    private todoEffects: TodoEffects,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private actions$: Actions
   ) {
     this.todo$ = store.select('todo');
   }
@@ -60,9 +60,19 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private listenEvents() {
     this.sub$.add(
-      this.todoEffects.saveTodo$.subscribe((res) => {
-        this.toast.success(`Se ha agregado la tarea: ${res.payload.text}`);
-      })
+      this.actions$
+        .pipe(ofType(ActionTypes.AddedSuccess))
+        .subscribe((res: { payload: TodoState }) => {
+          this.toast.success(`Se ha agregado la tarea: ${res.payload.text}`);
+        })
+    );
+
+    this.sub$.add(
+      this.actions$
+        .pipe(ofType(ActionTypes.RemoveSuccess))
+        .subscribe((res: { payload: TodoState }) => {
+          this.toast.show(`Se ha removido la tarea: ${res.payload.text}`);
+        })
     );
   }
 }

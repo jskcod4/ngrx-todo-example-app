@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap } from 'rxjs/operators';
-import { TodoApiService } from '../services/todo-api.service';
+import { pipe } from 'rxjs';
+import { map, mergeMap, tap } from 'rxjs/operators';
 
+import { TodoApiService } from '../services/todo-api.service';
 import { ActionTypes } from './todo.actions';
 
 @Injectable()
@@ -15,6 +16,19 @@ export class TodoEffects {
           .create(res)
           .pipe(
             map((res) => ({ type: ActionTypes.AddedSuccess, payload: res }))
+          )
+      )
+    )
+  );
+
+  deleteTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ActionTypes.Remove),
+      mergeMap((res) =>
+        this.todoApiService
+          .remove(res)
+          .pipe(
+            map((res) => ({ type: ActionTypes.RemoveSuccess, payload: res }))
           )
       )
     )
